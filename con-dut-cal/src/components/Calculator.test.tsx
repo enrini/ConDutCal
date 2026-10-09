@@ -3,6 +3,17 @@ import { axe } from 'jest-axe';
 import '@testing-library/jest-dom'; 
 import Calculator from './Calculator';
 
+// Mock Recharts ResponsiveContainer
+jest.mock('recharts', () => {
+  const OriginalModule = jest.requireActual('recharts');
+  return {
+    ...OriginalModule,
+    ResponsiveContainer: ({ children }: { children: React.ReactNode }) => (
+      <div style={{ width: 800, height: 260 }}>{children}</div>
+    ),
+  };
+});
+
 describe('Calculator UI & Maths Logic Suite', () => {
   it('should have no WCAG accessibility violations on startup', async () => {
     const { container } = render(<Calculator />);
