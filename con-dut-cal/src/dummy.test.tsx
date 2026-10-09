@@ -1,18 +1,25 @@
 import { render, screen } from '@testing-library/react';
+import { axe } from 'jest-axe';
 
-describe('Jest Configuration Verification', () => {
-  // Verifies basic Jest execution
-  it('should pass a simple math test', () => {
-    expect(1 + 1).toBe(2);
-  });
-
-  // Verifies React Testing Library, JSDOM, and jest-dom matchers
+describe('Jest & Axe Configuration Verification', () => {
   it('should render JSX and find it in the document', () => {
     render(<h1>Hello, ConDutCal!</h1>);
+    expect(screen.getByText('Hello, ConDutCal!')).toBeInTheDocument(); 
+  });
+
+  it('should pass basic accessibility checks', async () => {
+    // Render basic structure
+    const { container } = render(
+      <main>
+        <h1>Consumer Duty Calculator</h1>
+        <button type="button">Calculate</button>
+      </main>
+    );
     
-    const heading = screen.getByText('Hello, ConDutCal!');
+    // Pass rendered HTML to axe-core
+    const results = await axe(container);
     
-    // toBeInTheDocument comes from your jest.setup.ts file
-    expect(heading).toBeInTheDocument(); 
+    // Assert no WCAG violations present
+    expect(results).toHaveNoViolations();
   });
 });
