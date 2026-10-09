@@ -81,4 +81,12 @@ These requirements were gathered from interviews with the Sales Team & the Compl
 | NFR-10 | System output strings (currency values) must leverage standard `Intl.NumberFormat` to reliably display as GBP (£) with standard comma grouping. | Ensures consistent formatting without requiring heavy external date/number libraries. |
 
 ##### Prototyping
-A prototype was built using Figma Design in order to quickly get stakeholder feedback. We decided to leverage the open source Material Design library in order avoid having to create components from scratch, and to align with a future overhaul of the organisation's website which is being considered.
+A prototype was built using Figma Design in order to quickly get stakeholder feedback. We decided to leverage the open source Material Design library in order avoid having to create components from scratch, and to align with a future overhaul of the organisation's website which is being considered. This has been added to the repository as Calculator.fig.
+
+##### Tech Stack
+- **Framework:** React with Vite
+- **Language:** Strict TypeScript
+- **UI & Styling:** Material UI v6
+- **Data Visualization:** Recharts
+- **Testing:** Jest, React Testing Library, and `jest-axe` (WCAG compliance)
+- **CI/CD & Hosting:** GitHub Actions & Pages
