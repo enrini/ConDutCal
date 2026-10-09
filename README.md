@@ -1,7 +1,11 @@
 # ConDutCal
 Consumer Duty Calculator
 
-ConDutCal is a proposed project to create a calculator to allow customers leasing equipment to see how much extra they're paying compared with if they bought outright. This is intended to align with the "act to deliver good outcomes for retail customers." part of the FCA's Consumer Duty rules. The calculator will follow WCAG accessibility standards where possible, in alignment with the "staff working in product and service design or transformation programmes should take vulnerable customers’ needs into account as part of the design process or transformation agenda" section of the FCA Guidance for the fair treatment of vulnerable customers. The calculator should align with the organisation's branding & colour scheme guidelines. Commits should follow the conventional commits format for consistency.
+ConDutCal is a project to create a calculator to allow customers leasing equipment to see how much extra they're paying compared with if they bought outright. This is intended to align with the "act to deliver good outcomes for retail customers." part of the FCA's Consumer Duty rules. The calculator will follow WCAG accessibility standards where possible, in alignment with the "staff working in product and service design or transformation programmes should take vulnerable customers’ needs into account as part of the design process or transformation agenda" section of the FCA Guidance for the fair treatment of vulnerable customers. The calculator aligns with the organisation's branding & colour scheme guidelines. Commits follow the conventional commits format for consistency.
+
+##### Hosting
+
+A live copy of the calculator is hosted via GitHub Pages here: https://enrini.github.io/ConDutCal/
 
 #### Requirements
 
