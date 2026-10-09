@@ -83,6 +83,9 @@ These requirements were gathered from interviews with the Sales Team & the Compl
 ##### Prototyping
 A prototype was built using Figma Design in order to quickly get stakeholder feedback. We decided to leverage the open source Material Design library in order avoid having to create components from scratch, and to align with a future overhaul of the organisation's website which is being considered. This has been added to the repository as Calculator.fig.
 
+##### Testing Rationale
+The project is tested using Jest to test the functional and non-functional requirements - with jest-axe used to test accessibility.
+
 ##### Tech Stack
 - **Framework:** React with Vite
 - **Language:** Strict TypeScript
