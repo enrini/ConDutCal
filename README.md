@@ -47,3 +47,6 @@ These requirements were gathered from interviews with the Sales Team & the Compl
 | :--- | :--- | :--- |
 | FU-08 | The results must include a side-by-side visual comparison (for example a stacked bar chart) comparing 'Total Purchase Cost' with 'Total Lease Cost' | Visual aids are key to meeting the FCA's 'Consumer Understanding' outcome, especially for vulnerable customers. |
 | FU-09 | The calculator must generate a plain-English summary - e.g. "Leasing this equipment over 36 months costs £2400 more than buying it outright." | Provides the comparison figure to the user |
+
+##### Prototyping
+A prototype was built using Figma Design in order to quickly get stakeholder feedback. We decided to leverage the open source Material Design library in order avoid having to create components from scratch, and to align with a future overhaul of the organisation's website which is being considered.
