@@ -8,6 +8,7 @@ import {
   Grid,
   TextField,
   InputAdornment,
+  Button,
 } from '@mui/material';
 import {
   Menu as MenuIcon,
@@ -34,22 +35,29 @@ const CalcField: React.FC<CalcFieldProps> = ({
 }) => {
   return (
     <Box sx={{ mb: 2 }}>
-<TextField
+      <TextField
         id={id}
         variant="filled"
         disabled={disabled}
         value={value}
         onChange={(e: React.ChangeEvent<HTMLInputElement>) => onChange?.(e.target.value)}
+        type="number"
         slotProps={{
           htmlInput: { 'aria-label': label },
           input: {
             startAdornment: showPound ? (
-              <InputAdornment position="start" sx={{ color: '#1A1A1A', fontStyle: 'normal' }}>                £
+              <InputAdornment position="start" sx={{ color: '#1A1A1A', fontStyle: 'normal' }}>
+                £
               </InputAdornment>
             ) : null,
             endAdornment: (
               <InputAdornment position="end">
-                <IconButton size="small" aria-label={`Clear ${label}`} disabled={disabled}>
+                <IconButton 
+                  size="small" 
+                  aria-label={`Clear ${label}`} 
+                  disabled={disabled}
+                  onClick={() => onChange?.('')}
+                >
                   <CancelIcon sx={{ fontSize: '20px', color: '#595959' }} />
                 </IconButton>
               </InputAdornment>
@@ -88,10 +96,38 @@ const CalcField: React.FC<CalcFieldProps> = ({
 };
 
 export default function Calculator() {
+  // Inputs
+  const [invoiceValue, setInvoiceValue] = useState('');
+  const [ongoingPayment, setOngoingPayment] = useState('');
+  const [firstPayment, setFirstPayment] = useState('');
+  const [termLength, setTermLength] = useState('');
   const [maintenanceIncluded, setMaintenanceIncluded] = useState(false);
-  const [isCalculated] = useState(false); 
-  
-  const [termLength, setTermLength] = useState(''); 
+  const [maintenanceCost, setMaintenanceCost] = useState('');
+
+  // Results
+  const [isCalculated, setIsCalculated] = useState(false);
+  const [results, setResults] = useState({ totalCost: 0, difference: 0 });
+
+  const formatGBP = (amount: number) => {
+    return amount.toLocaleString('en-GB', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  };
+
+  const handleCalculate = () => {
+    const invoice = parseFloat(invoiceValue) || 0;
+    const ongoing = parseFloat(ongoingPayment) || 0;
+    const first = parseFloat(firstPayment) || 0;
+    const term = parseInt(termLength, 10) || 0;
+    
+    // Include maintenance if toggle is ON
+    const maintenance = maintenanceIncluded ? (parseFloat(maintenanceCost) || 0) : 0;
+
+    // Formula: First Payment + (Ongoing * Remaining Months) + Maintenance
+    const totalLeaseCost = first + (ongoing * Math.max(0, term - 1)) + maintenance;
+    const diff = Math.max(0, totalLeaseCost - invoice); // Prevent negative differences if data is weird
+
+    setResults({ totalCost: totalLeaseCost, difference: diff });
+    setIsCalculated(true);
+  };
 
   return (
     <Box sx={{ minHeight: '100vh', bgcolor: '#FFFFFF', pb: 4 }}>
@@ -140,11 +176,10 @@ export default function Calculator() {
         <Grid container spacing={5}>
           {/* LEFT: Inputs Block */}
           <Grid size={{ xs: 12, md: 5 }}>
-            <CalcField id="invoice-value" label="Invoice Value" />
-            <CalcField id="ongoing-payment" label="Ongoing Payment Amount" />
-            <CalcField id="first-payment" label="First Payment Amount" />
+            <CalcField id="invoice-value" label="Invoice Value" value={invoiceValue} onChange={setInvoiceValue} />
+            <CalcField id="ongoing-payment" label="Ongoing Payment Amount" value={ongoingPayment} onChange={setOngoingPayment} />
+            <CalcField id="first-payment" label="First Payment Amount" value={firstPayment} onChange={setFirstPayment} />
             
-            {/* Wired up Term Length input */}
             <CalcField 
               id="term-length" 
               label="Term Length (months)" 
@@ -174,7 +209,10 @@ export default function Calculator() {
               </Typography>
               <Switch
                 checked={maintenanceIncluded}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setMaintenanceIncluded(e.target.checked)}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                  setMaintenanceIncluded(e.target.checked);
+                  if (!e.target.checked) setMaintenanceCost(''); // clear if toggled off
+                }}
                 color="primary"
                 slotProps={{ input: { 'aria-label': 'Maintenance/Servicing included with lease' } }}
               />
@@ -184,7 +222,31 @@ export default function Calculator() {
               id="maintenance-costs"
               label="Maintenance/Service Costs"
               disabled={!maintenanceIncluded}
+              value={maintenanceCost}
+              onChange={setMaintenanceCost}
             />
+
+            <Button
+              variant="contained"
+              fullWidth
+              onClick={handleCalculate}
+              sx={{
+                mt: 2,
+                mb: 2,
+                height: 56,
+                bgcolor: '#005A9C',
+                color: '#FFFFFF',
+                fontFamily: 'Inter',
+                fontWeight: 600,
+                fontSize: '1rem',
+                textTransform: 'none',
+                '&:hover': {
+                  bgcolor: '#004375',
+                },
+              }}
+            >
+              Calculate Costs
+            </Button>
           </Grid>
 
           <Grid
@@ -235,7 +297,7 @@ export default function Calculator() {
                 data-testid="chart-placeholder"
               >
                 <Typography variant="body2" sx={{ color: '#A5A5A5', fontFamily: 'Inter' }}>
-                  [ Dynamic Chart Placeholder ]
+                  {isCalculated ? 'Bar Chart will replace this block' : '[ Dynamic Chart Placeholder ]'}
                 </Typography>
               </Box>
             </Paper>
@@ -248,7 +310,7 @@ export default function Calculator() {
                 Results
               </Typography>
               
-              {isCalculated && (
+              {isCalculated ? (
                 <>
                   <Typography
                     variant="h4"
@@ -259,7 +321,7 @@ export default function Calculator() {
                       mb: 1.5,
                     }}
                   >
-                    £[Amount]
+                    £{formatGBP(results.totalCost)}
                   </Typography>
                   <Typography
                     variant="body1"
@@ -269,10 +331,14 @@ export default function Calculator() {
                       lineHeight: 1.6,
                     }}
                   >
-                    Leasing this equipment over {termLength || '[X]'} months costs{' '}
-                    <strong style={{ color: '#005A9C' }}>£[Amount]</strong> more than buying it outright.
+                    Leasing this equipment over {termLength} months costs{' '}
+                    <strong style={{ color: '#005A9C' }}>£{formatGBP(results.difference)}</strong> more than buying it outright.
                   </Typography>
                 </>
+              ) : (
+                <Typography variant="body1" sx={{ color: '#A5A5A5', fontFamily: 'Inter', mt: 1 }}>
+                  Enter your values and click calculate to see the cost comparison.
+                </Typography>
               )}
             </Box>
           </Grid>
