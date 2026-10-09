@@ -48,5 +48,37 @@ These requirements were gathered from interviews with the Sales Team & the Compl
 | FU-08 | The results must include a side-by-side visual comparison (for example a stacked bar chart) comparing 'Total Purchase Cost' with 'Total Lease Cost' | Visual aids are key to meeting the FCA's 'Consumer Understanding' outcome, especially for vulnerable customers. |
 | FU-09 | The calculator must generate a plain-English summary - e.g. "Leasing this equipment over 36 months costs £2400 more than buying it outright." | Provides the comparison figure to the user |
 
+##### Non-functional Requirements
+
+###### Accessibility
+
+| Requirement ID | Requirement | Rationale |
+| :--- | :--- | :--- |
+| NFR-01 | The calculator must meet **WCAG 2.2 Level AA** standards. | Addresses the FCA mandate to consider vulnerable customers. |
+| NFR-02 | Interactive elements should be fully navigable via keyboard and compatible with standard screen readers. | Ensures visually impaired/motor-impaired users can utilise the calculator. |
+
+###### Security & Data Protection
+
+| Requirement ID | Requirement | Rationale |
+| :--- | :--- | :--- |
+| NFR-03 | **Zero Data Retention:** All financial inputs and calculations must be executed 100% client-side within the browser. | Eliminates the need for a backend, drastically reducing GDPR compliance scope and protecting customer privacy. |
+| NFR-04 | The application must not use cookies or local storage to persist user financial data across sessions. | Ensures shared devices (e.g., in a dealership or public library) do not expose previous users' financial information. |
+
+###### Maintainability & Quality
+
+| Requirement ID | Requirement | Rationale |
+| :--- | :--- | :--- |
+| NFR-05 | **Calculation Accuracy:** The test suite must maintain 100% coverage on all mathematical utility functions (APR calculation, total cost, etc.). | Financial calculators are highly sensitive; floating-point math errors in JavaScript could mislead customers. |
+| NFR-06 | Commits must adhere strictly to the Conventional Commits specification (e.g., `feat:`, `fix:`, `chore:`). | Maintains a readable project history and enables automated semantic versioning within the GitHub Actions pipeline. |
+| NFR-07 | The project must enforce strict TypeScript typing (no `any` types permitted). | Prevents runtime errors where string inputs from text fields are concatenated rather than treated as a number. |
+
+###### Performance & Compatibility
+
+| Requirement ID | Requirement | Rationale |
+| :--- | :--- | :--- |
+| NFR-08 | The interface must be fully responsive, defaulting to a "mobile-first" layout down to a 320px screen width. | Many retail customers will access the calculator on their mobile devices while speaking with sales reps. |
+| NFR-09 | The application must function identically on the current and previous major versions of Chrome, Safari, Edge, and Firefox. | Ensures broad accessibility regardless of the customer's preferred browser. |
+| NFR-10 | System output strings (currency values) must leverage standard `Intl.NumberFormat` to reliably display as GBP (£) with standard comma grouping. | Ensures consistent formatting without requiring heavy external date/number libraries. |
+
 ##### Prototyping
 A prototype was built using Figma Design in order to quickly get stakeholder feedback. We decided to leverage the open source Material Design library in order avoid having to create components from scratch, and to align with a future overhaul of the organisation's website which is being considered.
