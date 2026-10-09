@@ -89,7 +89,7 @@ const CalcField: React.FC<CalcFieldProps> = ({
 
 export default function Calculator() {
   const [maintenanceIncluded, setMaintenanceIncluded] = useState(false);
-  const [isCalculated, setIsCalculated] = useState(false); 
+  const [isCalculated] = useState(false); 
   
   const [termLength, setTermLength] = useState(''); 
 
