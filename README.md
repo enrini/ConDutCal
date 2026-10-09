@@ -17,6 +17,9 @@ The project must follow the below brand/colour scheme guidelines, taken from the
 | Error / Warning | `#D32F2F` |
 | Background | `#FFFFFF` |
 
+###### Material Design Theme
+A custom theme for the Material Design library was generated using https://material-foundation.github.io/material-theme-builder/ for use in Figma and in the MVP - and then added to the project repository as material-theme.zip and material-theme.json.
+
 ##### Functional Requirements
 
 These requirements were gathered from interviews with the Sales Team & the Compliance Team to ensure the calculator serves the customer-facing side of the business as well as meeting FCA standards.
