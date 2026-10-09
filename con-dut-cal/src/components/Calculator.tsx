@@ -335,7 +335,7 @@ export default function Calculator() {
                         width={80}
                       />
                       <Tooltip 
-                        formatter={(value: number) => [`£${formatGBP(value)}`, 'Total Cost']}
+                        formatter={(value) => [`£${formatGBP(Number(value))}`, 'Total Cost']}
                         cursor={{ fill: '#F9F9F9' }}
                         contentStyle={{ borderRadius: '8px', border: '1px solid #DCE3EB', fontFamily: 'Inter' }}
                       />
