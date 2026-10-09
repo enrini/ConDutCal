@@ -35,13 +35,15 @@ jobs:
       - name: Run Jest & Axe Accessibility Tests
         run: npm run test
 
-      - name: Configure Git User (for deployment bot)
+      - name: Build the React app
+        # Only build for deployment if we are on the main branch
         if: github.ref == 'refs/heads/main'
-        run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+        run: npm run build
 
       - name: Deploy to GitHub Pages
-        # Deploy if pushing to main and tests pass
+        # Only deploy if pushing to main and tests pass
         if: github.ref == 'refs/heads/main'
-        run: npm run deploy
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./con-dut-cal/dist
