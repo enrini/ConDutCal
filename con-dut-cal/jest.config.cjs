@@ -10,6 +10,7 @@ module.exports = {
     '^.+\\.tsx?$': [
       'ts-jest',
       {
+        isolatedModules: true,
         diagnostics: {
           ignoreCodes: [151001],
         },
