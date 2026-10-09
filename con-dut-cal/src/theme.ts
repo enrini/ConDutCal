@@ -25,8 +25,6 @@ const theme = createTheme({
   },
   typography: {
     fontFamily: '"Inter", "Helvetica", "Arial", sans-serif',
-    // Example of applying the secondary font to code/monospace elements
-    fontFamilyMonospace: '"Fira Code"',
   },
 });
 
