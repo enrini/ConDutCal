@@ -1,5 +1,14 @@
 import React, { useState } from 'react';
 import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+} from 'recharts';
+import {
   Box,
   Typography,
   IconButton,
@@ -290,15 +299,56 @@ export default function Calculator() {
                   display: 'flex', 
                   alignItems: 'center', 
                   justifyContent: 'center',
-                  bgcolor: '#F9F9F9',
-                  border: '1px dashed #DCE3EB',
-                  borderRadius: 1
+                  bgcolor: isCalculated ? '#FFFFFF' : '#F9F9F9',
+                  border: isCalculated ? 'none' : '1px dashed #DCE3EB',
+                  borderRadius: 1,
+                  width: '100%',
                 }}
-                data-testid="chart-placeholder"
+                data-testid="chart-container"
               >
-                <Typography variant="body2" sx={{ color: '#A5A5A5', fontFamily: 'Inter' }}>
-                  {isCalculated ? 'Bar Chart will replace this block' : '[ Dynamic Chart Placeholder ]'}
-                </Typography>
+                {!isCalculated ? (
+                  <Typography variant="body2" sx={{ color: '#A5A5A5', fontFamily: 'Inter' }}>
+                    [ Dynamic Chart Placeholder ]
+                  </Typography>
+                ) : (
+                  <ResponsiveContainer width="100%" height="100%">
+                    <BarChart
+                      data={[
+                        { name: 'Buy Outright', cost: parseFloat(invoiceValue) || 0 },
+                        { name: 'Lease Total', cost: results.totalCost },
+                      ]}
+                      margin={{ top: 20, right: 20, left: 20, bottom: 0 }}
+                    >
+                      <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#E0E0E0" />
+                      <XAxis 
+                        dataKey="name" 
+                        axisLine={false} 
+                        tickLine={false} 
+                        tick={{ fontFamily: 'Inter', fill: '#595959', fontSize: 14 }}
+                        dy={10}
+                      />
+                      <YAxis 
+                        axisLine={false} 
+                        tickLine={false}
+                        tick={{ fontFamily: 'Inter', fill: '#595959', fontSize: 14 }}
+                        tickFormatter={(value) => `£${value.toLocaleString('en-GB')}`}
+                        width={80}
+                      />
+                      <Tooltip 
+                        formatter={(value: number) => [`£${formatGBP(value)}`, 'Total Cost']}
+                        cursor={{ fill: '#F9F9F9' }}
+                        contentStyle={{ borderRadius: '8px', border: '1px solid #DCE3EB', fontFamily: 'Inter' }}
+                      />
+                      <Bar 
+                        dataKey="cost" 
+                        fill="#005A9C" 
+                        radius={[4, 4, 0, 0]} 
+                        maxBarSize={60} 
+                        animationDuration={1000}
+                      />
+                    </BarChart>
+                  </ResponsiveContainer>
+                )}
               </Box>
             </Paper>
 
